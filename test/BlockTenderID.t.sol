@@ -52,8 +52,8 @@ contract BlockTenderIDTest is Test {
     function setUp() public {
         vm.startBroadcast();
         uint256 minDelay = 10 minutes;
-        uint32 votingDelay = 300; // ~10 minutes
-        uint32 votingPeriod = 300; // ~10 minutes
+        uint32 votingDelay = 150; // ~10 minutes
+        uint32 votingPeriod = 150; // ~10 minutes
         uint256 quorum = 1;
 
         token = new TokenRakyat();
