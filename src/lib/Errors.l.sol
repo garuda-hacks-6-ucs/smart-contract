@@ -16,6 +16,8 @@ library Errors {
 
     error InvalidProposalState(uint8 expected, uint8 actual);
 
+    error FeeExceedsBudget(uint256 fee, uint256 budget);
+
     error TransferFailed();
 
     error AlreadyGranted();

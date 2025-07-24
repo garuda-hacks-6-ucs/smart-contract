@@ -9,8 +9,12 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 contract BlockTenderIDNFT is ERC721URIStorage, ReentrancyGuard {
     constructor() ERC721("ProjectRakyat", "PRT") {}
 
-    function mint(uint256 _tokenId, address _government, string memory _uri) external {
-        _safeMint(_government, _tokenId);
+    function mint(
+        uint256 _tokenId,
+        address _recipient,
+        string memory _uri
+    ) external {
+        _safeMint(_recipient, _tokenId);
         _setTokenURI(_tokenId, _uri);
     }
 }
