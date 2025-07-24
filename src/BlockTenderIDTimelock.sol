@@ -3,10 +3,11 @@
 pragma solidity ^0.8.28;
 
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {Errors} from "../src/lib/Errors.l.sol";
 import {Events} from "../src/lib/Events.l.sol";
 
-contract BlockTenderIDTimelock is TimelockController {
+contract BlockTenderIDTimelock is TimelockController, ReentrancyGuard {
     bool private _isInit;
 
     modifier onlyOnce() {
@@ -21,7 +22,7 @@ contract BlockTenderIDTimelock is TimelockController {
         address _admin
     ) TimelockController(_minDelay, _proposers, _executors, _admin) {}
 
-    function transferETH(address _recipient, uint256 _value) external payable {
+    function transferETH(address _recipient, uint256 _value) external payable nonReentrant {
         (bool success, ) = _recipient.call{value: _value}("");
         require(success, Errors.TransferFailed());
     }

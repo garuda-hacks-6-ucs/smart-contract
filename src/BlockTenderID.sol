@@ -48,7 +48,7 @@ contract BlockTenderID is
         string uri;
         uint256 budget;
         uint256 vendorSubmissionStart;
-        uint256 vendorSubmissionPeriod;
+        // uint256 vendorSubmissionPeriod;
         uint256 voteStart;
         uint256 voteEnd;
     }
@@ -70,11 +70,6 @@ contract BlockTenderID is
         string governmentProposalUUID;
         string vendorProposalUUID;
     }
-
-    // struct WinnerVendor {
-    //     string governmentProposalUUID;
-    //     string vendorProposalUUID;
-    // }
 
     enum GovernmentProposalState {
         Pending,
@@ -244,9 +239,9 @@ contract BlockTenderID is
     ) external payable checkRegisteredGovernment(true) nonReentrant {
         uint256 vendorSubmissionStart = block.timestamp +
             GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DELAY;
-        uint256 vendorSubmissionPeriod = vendorSubmissionStart +
-            GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DURATION;
-        uint256 voteStart = vendorSubmissionPeriod +
+        // uint256 vendorSubmissionPeriod = vendorSubmissionStart +
+        //     GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DURATION;
+        uint256 voteStart = vendorSubmissionStart +
             GOVERNMENT_PROPOSAL_VOTING_DELAY;
         uint256 voteDuration = voteStart + GOVERNMENT_PROPOSAL_VOTE_DURATION;
 
@@ -256,7 +251,7 @@ contract BlockTenderID is
             _uri,
             msg.value,
             vendorSubmissionStart,
-            vendorSubmissionPeriod,
+            // vendorSubmissionPeriod,
             voteStart,
             voteDuration
         );
@@ -290,6 +285,7 @@ contract BlockTenderID is
         string memory _vendorProposalUUID
     )
         external
+        checkVoteAvailability
         checkRegisteredCitizen(true)
         checkGovernmentProposalState(
             _governmentProposalUUID,
@@ -308,9 +304,9 @@ contract BlockTenderID is
             _vendorProposalUUID
         ].totalVotes;
 
-        string memory winnerVendor = s_winnerVendor[_governmentProposalUUID];
+        string memory _winnerVendor = s_winnerVendor[_governmentProposalUUID];
 
-        if (bytes(winnerVendor).length == 0) {
+        if (bytes(_winnerVendor).length == 0) {
             s_winnerVendor[_governmentProposalUUID] = _vendorProposalUUID;
         }
 
@@ -334,7 +330,6 @@ contract BlockTenderID is
             _governmentProposalUUID,
             uint8(GovernmentProposalState.End)
         )
-        onlyGovernance
         nonReentrant
     {
         uint256 governmentBudget = s_governmentProposal[_governmentProposalUUID]
@@ -366,7 +361,7 @@ contract BlockTenderID is
         if (block.timestamp < _proposal.vendorSubmissionStart) {
             return uint8(GovernmentProposalState.Pending);
         } else if (
-            block.timestamp >= _proposal.vendorSubmissionPeriod &&
+            block.timestamp >= _proposal.vendorSubmissionStart &&
             block.timestamp < _proposal.voteStart
         ) {
             return uint8(GovernmentProposalState.AcceptingVendor);
@@ -386,12 +381,15 @@ contract BlockTenderID is
         bytes[] memory _calldatas,
         string memory _description,
         uint256 _tokenId,
-        string memory _uri
+        string memory _uri,
+        string memory _governmentProposalUUID
     )
         external
-        // string memory _governmentProposalUUID,
-        // string memory _vendorProposalUUID
         checkRegisteredVendor(true)
+        checkGovernmentProposalState(
+            _governmentProposalUUID,
+            uint8(GovernmentProposalState.End)
+        )
         returns (uint256)
     {
         i_nft.mint(_tokenId, msg.sender, _uri);
@@ -472,6 +470,12 @@ contract BlockTenderID is
         address _user
     ) external view returns (DeliveredWorkVoteHistory[] memory) {
         return s_deliveredWorkVoteHistory[_user];
+    }
+
+    function winnerVendor(
+        string memory _governmentProposalUUID
+    ) external view returns (string memory) {
+        return s_winnerVendor[_governmentProposalUUID];
     }
 
     function state(
