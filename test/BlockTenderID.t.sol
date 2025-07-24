@@ -38,6 +38,8 @@ contract BlockTenderIDTest is Test {
     uint256 _vendorProposalTokenId = 102;
     uint256 _fee = 4 ether;
 
+    uint256 _deliverWorkTokenId = 103;
+
     string private _uri = "ipfs://QmXyz123abc456.../proposal.json";
 
     uint8 private _support = 1;
@@ -210,8 +212,88 @@ contract BlockTenderIDTest is Test {
             actualTimelockBalanceAfterFirstWithdraw
         );
 
-        
+        _targets.push(address(tender));
+        _values.push(
+            tender
+                .vendorProposal(_governmentProposalUUID, _vendorProposalUUID)
+                .fee / 2
+        );
+        _calldatas.push(
+            abi.encodeWithSignature(
+                "withdrawRemainingPayment(string,string)",
+                _governmentProposalUUID,
+                _vendorProposalUUID
+            )
+        );
 
+        vm.startPrank(ALICE);
+        tender.deliverWork(
+            _targets,
+            _values,
+            _calldatas,
+            _description,
+            _deliverWorkTokenId,
+            _uri,
+            _governmentProposalUUID
+        );
+        vm.stopPrank();
 
+        uint256 workId = tender.getProposalId(
+            _targets,
+            _values,
+            _calldatas,
+            keccak256(bytes(_description))
+        );
+        uint256 voteStart = tender.proposalSnapshot(workId);
+
+        vm.roll(voteStart + 1);
+
+        vm.startPrank(BOB);
+        tender.voteDeliveredWork(workId, _support, _reason);
+        vm.stopPrank();
+
+        uint8 activeState = uint8(tender.state(workId));
+        assertEq(activeState, 1);
+
+        vm.roll(block.number + tender.votingPeriod() + 1);
+
+        uint8 succeededState = uint8(tender.state(workId));
+        assertEq(succeededState, 4);
+
+        vm.startPrank(ALICE);
+        tender.queue(
+            _targets,
+            _values,
+            _calldatas,
+            keccak256(bytes(_description))
+        );
+        vm.stopPrank();
+
+        uint8 queuedState = uint8(tender.state(workId));
+        assertEq(queuedState, 5);
+
+        vm.warp(block.timestamp + tender.proposalEta(workId) + 1);
+        tender.execute(
+            _targets,
+            _values,
+            _calldatas,
+            keccak256(bytes(_description))
+        );
+
+        uint256 actualAliceBalanceAfterSecondWithdraw = ALICE.balance;
+        uint256 expectedAliceBalanceAfterSecondWithdraw = 2 ether;
+        uint256 actualTimelockBalanceAfterSecondWithdraw = tender
+            .blockTenderIDTimelock()
+            .balance;
+        uint256 expectedTimelockBalanceAfterSecondWithdraw = 0 ether;
+
+        assertEq(
+            expectedAliceBalanceAfterSecondWithdraw,
+            actualAliceBalanceAfterSecondWithdraw
+        );
+        assertEq(
+            expectedTimelockBalanceAfterSecondWithdraw,
+            actualTimelockBalanceAfterSecondWithdraw
+        );
     }
 }
