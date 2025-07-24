@@ -239,8 +239,6 @@ contract BlockTenderID is
     ) external payable checkRegisteredGovernment(true) nonReentrant {
         uint256 vendorSubmissionStart = block.timestamp +
             GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DELAY;
-        // uint256 vendorSubmissionPeriod = vendorSubmissionStart +
-        //     GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DURATION;
         uint256 voteStart = vendorSubmissionStart +
             GOVERNMENT_PROPOSAL_VOTING_DELAY;
         uint256 voteDuration = voteStart + GOVERNMENT_PROPOSAL_VOTE_DURATION;
@@ -251,7 +249,6 @@ contract BlockTenderID is
             _uri,
             msg.value,
             vendorSubmissionStart,
-            // vendorSubmissionPeriod,
             voteStart,
             voteDuration
         );
@@ -320,7 +317,6 @@ contract BlockTenderID is
     }
 
     function withdrawInitialPayment(
-        // uint256 _workId,
         string memory _governmentProposalUUID,
         string memory _vendorProposalUUID
     )
@@ -445,6 +441,14 @@ contract BlockTenderID is
 
     function blockTenderIDTimelock() external view returns (address) {
         return address(i_timelock);
+    }
+
+    function blockTenderIDNFT() external view returns (address) {
+        return address(i_nft);
+    }
+
+    function tokenRakyat() external view returns (address) {
+        return address(i_token);
     }
 
     function governmentProposal(
