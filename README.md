@@ -1,4 +1,4 @@
-# BlocTenderID : Where businesses are chosen transparently based on merit, not connections. 🚀
+# BlocTenderID : ganti tag line No hidden deals. Just transparency and merit. 🚀
 
 BlocTenderID is a Blockchain and AI-powered digital tender platform designed to create a transparent, fair, and nepotism-free government procurement process. It empowers citizens to participate in selecting the most suitable vendors through decentralized public voting, while smart contracts automate secure and timely payments.
 
