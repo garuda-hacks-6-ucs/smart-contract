@@ -14,9 +14,9 @@ contract BlockTenderIDScript is Script {
 
     function run() public {
         vm.startBroadcast();
-        uint256 minDelay = 15 minutes;
-        uint32 votingDelay = 450; // ~10 minutes
-        uint32 votingPeriod = 450; // ~10 minutes
+        uint256 minDelay = 5 minutes;
+        uint32 votingDelay = 0;
+        uint32 votingPeriod = 1000;
         uint256 quorum = 1;
 
         TokenRakyat token = new TokenRakyat();

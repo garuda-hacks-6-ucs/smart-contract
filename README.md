@@ -1,66 +1,29 @@
-## Foundry
+# BlocTenderID : Beaches aren't gonna clean themselves. 🚀
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+BlocTenderID is a Blockchain and AI-powered digital tender platform designed to create a transparent, fair, and nepotism-free government procurement process. It empowers citizens to participate in selecting the most suitable vendors through decentralized public voting, while smart contracts automate secure and timely payments.
 
-Foundry consists of:
+## 🧩 Architecture
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### 📜 Smart Contract
 
-## Documentation
+    ```
+    ├── smart-contract/
+    │   ├── lib/              # External dependencies or libraries (via forge install)
+    │   ├── scripts/          # Deployment and automation scripts using Forge
+    │   ├── src/              # Main smart contract source files
+    │   │   └── lib/          # Contains reusable code like custom errors and event declarations
+    │   ├── test/             # Smart contract test files (e.g., unit tests)
+    │   ├── .env              # Environment variables (e.g., RPC URL, private key)
+    │   ├── .gitignore        # Git ignore rules
+    │   ├── .gitmodules       # Tracks git submodules (e.g., external contracts/libs)
+    │   ├── Makefile          # Automation commands for building, testing, and deploying
+    │   └── foundry.toml      # Foundry configuration file (e.g., compiler version, optimizer)
+    ```
 
-https://book.getfoundry.sh/
+## How to Run
 
-## Usage
+### 📜 Smart Contract
 
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```console
+    git clone https://github.com/garuda-hacks-6-ucs/frontend.git
 ```

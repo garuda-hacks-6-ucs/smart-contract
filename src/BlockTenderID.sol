@@ -98,12 +98,10 @@ contract BlockTenderID is
     BlockTenderIDTimelock i_timelock;
     BlockTenderIDNFT i_nft;
 
-    // uint256[] private workIds;
-
     uint256 private constant GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DELAY =
         1 minutes;
-    uint256 private constant GOVERNMENT_PROPOSAL_VOTING_DELAY = 5 minutes;
-    uint256 private constant GOVERNMENT_PROPOSAL_VOTE_DURATION = 5 minutes;
+    uint256 private constant GOVERNMENT_PROPOSAL_VOTING_DELAY = 1 minutes;
+    uint256 private constant GOVERNMENT_PROPOSAL_VOTE_DURATION = 2 minutes;
 
     modifier checkRegisteredVendor(bool _expected) {
         require(
