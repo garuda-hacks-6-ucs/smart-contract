@@ -24,6 +24,6 @@ BlocTenderID is a Blockchain and AI-powered digital tender platform designed to 
 
 ### 📜 Smart Contract
 
-```console
-    git clone https://github.com/garuda-hacks-6-ucs/frontend.git
+```bash
+> git clone https://github.com/garuda-hacks-6-ucs/frontend.git
 ```
