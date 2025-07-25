@@ -22,8 +22,64 @@ BlocTenderID is a Blockchain and AI-powered digital tender platform designed to 
 
 ## How to Run
 
-### 📜 Smart Contract
+This project uses [Foundry](https://book.getfoundry.sh/) and a custom `Makefile` for a smoother development experience.  
+Just run `make <task>` without remembering long commands!
+
+---
+
+### 📦 1. Install Foundry
+
+If you haven’t installed Foundry yet:
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+
+### 📁 2. Clone Repository
 
 ```bash
 > git clone https://github.com/garuda-hacks-6-ucs/frontend.git
+> cd smart contract
 ```
+
+### 📚 3. Install Dependencies
+
+```bash
+> make install
+```
+
+### 🔨 4. Compile Contracts
+```bash
+> make build
+```
+
+### 🧪 5. Run Test
+```bash
+> make test
+```
+
+### 🚀 6. Deploy Contracts
+```bash
+> make deploy-verify
+```
+
+## 🔐 .env Configuration
+
+Before running deploy or verification commands, make sure your `.env` file is properly set up in the root directory.
+
+```env
+# 🔑 Private key of your deployer wallet (NEVER share this)
+PRIVATE_KEY=your_private_key_here
+
+# 🌐 RPC URL of the target network
+RPC_URL=https://sepolia.optimism.io
+
+# 🔍 Etherscan or Blockscout API key
+ETHERSCAN_API_KEY=your_etherscan_or_blockscout_api_key
+
+# 🛡️ Set verifier type: "etherscan" or "blockscout"
+VERIFIER=blockscout
+
+# 🔗 Optional: custom verifier URL (needed for blockscout)
+VERIFIER_URL=https://testnet-explorer.optimism.io/api/
