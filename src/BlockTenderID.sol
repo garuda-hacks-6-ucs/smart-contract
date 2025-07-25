@@ -48,7 +48,6 @@ contract BlockTenderID is
         string uri;
         uint256 budget;
         uint256 vendorSubmissionStart;
-        // uint256 vendorSubmissionPeriod;
         uint256 voteStart;
         uint256 voteEnd;
     }
@@ -103,9 +102,7 @@ contract BlockTenderID is
 
     uint256 private constant GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DELAY =
         1 minutes;
-    uint256 private constant GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DURATION =
-        5 minutes;
-    uint256 private constant GOVERNMENT_PROPOSAL_VOTING_DELAY = 1 minutes;
+    uint256 private constant GOVERNMENT_PROPOSAL_VOTING_DELAY = 5 minutes;
     uint256 private constant GOVERNMENT_PROPOSAL_VOTE_DURATION = 5 minutes;
 
     modifier checkRegisteredVendor(bool _expected) {
@@ -236,7 +233,7 @@ contract BlockTenderID is
         string memory _governmentProposalUUID,
         uint256 _tokenId,
         string memory _uri
-    ) external payable checkRegisteredGovernment(true) nonReentrant {
+    ) external payable nonReentrant {
         uint256 vendorSubmissionStart = block.timestamp +
             GOVERNMENT_PROPOSAL_VENDOR_SUBMISSION_DELAY;
         uint256 voteStart = vendorSubmissionStart +
@@ -264,7 +261,6 @@ contract BlockTenderID is
         uint256 _fee
     )
         external
-        checkRegisteredVendor(true)
         checkGovernmentProposalState(
             _governmentProposalUUID,
             uint8(GovernmentProposalState.AcceptingVendor)
@@ -283,7 +279,6 @@ contract BlockTenderID is
     )
         external
         checkVoteAvailability
-        checkRegisteredCitizen(true)
         checkGovernmentProposalState(
             _governmentProposalUUID,
             uint8(GovernmentProposalState.Voting)
@@ -321,7 +316,6 @@ contract BlockTenderID is
         string memory _vendorProposalUUID
     )
         external
-        checkRegisteredVendor(true)
         checkGovernmentProposalState(
             _governmentProposalUUID,
             uint8(GovernmentProposalState.End)
@@ -381,7 +375,6 @@ contract BlockTenderID is
         string memory _governmentProposalUUID
     )
         external
-        checkRegisteredVendor(true)
         checkGovernmentProposalState(
             _governmentProposalUUID,
             uint8(GovernmentProposalState.End)
@@ -409,7 +402,6 @@ contract BlockTenderID is
         string calldata _reason
     )
         external
-        checkRegisteredCitizen(true)
         checkVoteAvailability
         returns (uint256)
     {

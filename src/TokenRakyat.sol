@@ -16,6 +16,7 @@ contract TokenRakyat is ERC20, ERC20Votes, ERC20Permit, ReentrancyGuard {
     address private s_owner;
 
     uint256 private constant DELEGATE_REWARD = 1 * 10 ** 18;
+    mapping(address => bool) private s_alreadyDelegate;
 
     constructor() ERC20("TokenRakyat", "TR") ERC20Permit("TokenRakyat") {}
 
